@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.group4.mycarpark.dao.IncomeMapper">
+    <sql id="insert">
+        money, method, type, carnum, cardnum, isillegal, source, time, duration
+    </sql>
+
+    <sql id="select">
+        id, money, method, type, carnum, cardnum, isillegal, source, time, duration
+    </sql>
+
+    <insert id="insertOneItem" keyProperty="id">
+        insert into income (<include refid="insert"></include>)
+        values (#{money}, #{method}, #{type}, #{carnum}, #{cardnum}, #{isillegal}, #{source}, #{time}, #{duration})
+    </insert>
+
+    <select id="findAll" resultType="com.group4.mycarpark.entity.Income">
+        select <include refid="select"></include> from income;
+    </select>
+
+</mapper>

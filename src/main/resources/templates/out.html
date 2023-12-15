@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>车牌号识别系统</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      max-width: 300px;
+      margin-bottom: 20px;
+    }
+
+    input {
+      margin-bottom: 10px;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      margin-top: 20px;
+    }
+
+    .button-container {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>停车场出口</h1>
+
+<form id="uploadForm" enctype="multipart/form-data">
+  <label for="file">选择图片：</label>
+  <input type="file" id="file" name="file" accept="image/*" required>
+  <button type="button" onclick="uploadAndRecognize()">上传并识别</button>
+</form>
+
+<div id="result"></div>
+<img id="recognizedImage" style="display: none;">
+
+<!--<div class="button-container">-->
+<!--  <button onclick="viewRecognitionHistory()">查看识别历史</button>-->
+<!--  <button onclick="logout()">退出</button>-->
+<!--</div>-->
+
+<div class="button-container">
+  <button onclick="carIn()">入口</button>
+</div>
+
+
+<script>
+  function uploadAndRecognize() {
+    const fileInput = document.getElementById('file');
+    const file = fileInput.files[0];
+
+    if (file) {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      fetch('/car/checkout', {
+        method: 'POST',
+        body: formData,
+      })
+              .then(response => response.text())
+              .then(result => {
+                document.getElementById('result').innerText = '识别结果： ' + result;
+                // document.getElementById('recognizedImage').src = URL.createObjectURL(file);
+                // document.getElementById('recognizedImage').style.display = 'block';
+              })
+              .catch(error => {
+                console.error('Error:', error);
+              });
+    } else {
+      alert('请选择要上传的图片！');
+    }
+  }
+
+  // function viewRecognitionHistory() {
+  //   // 在这里添加跳转到识别历史页面的逻辑
+  //   window.location.href = '/history';
+  // }
+  //
+  // function logout() {
+  //   // 执行退出操作，可以通过跳转到后端的/logout路径实现
+  //   window.location.href = '/logout';
+  // }
+
+  function carIn() {
+    // 执行退出操作，可以通过跳转到后端的/logout路径实现
+    window.location.href = '/main.html';
+  }
+
+</script>
+
+</body>
+</html>
